@@ -10,6 +10,7 @@ Using sequence labeling method to do **Chinese word segmentation**, **Part-of-sp
 ├── data/           # data
 ├── ner/            # named entity recognition
 ├── postag/         # part-of-speech tagging
+├── run.py          # example
 └── README.md
 ```
 

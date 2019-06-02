@@ -4,6 +4,15 @@ Using sequence labeling method to do **Chinese word segmentation**, **Part-of-sp
 
 ## Structure
 
+```bash
+.
+├── cws/            # chinese word segmentation
+├── data/           # data
+├── ner/            # named entity recognition
+├── postag/         # part-of-speech tagging
+└── README.md
+```
+
 ## Task Table
 
 | Dataset | Task  | Method | Result |
@@ -18,3 +27,4 @@ Using sequence labeling method to do **Chinese word segmentation**, **Part-of-sp
 
 ## Getting Started
 
+// TODO

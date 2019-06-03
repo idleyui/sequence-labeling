@@ -12,7 +12,10 @@ from hmmlearn.hmm import MultinomialHMM
 
 class HMM:
 
-    def __init__(self, obs_seq_list: list, state_seq_list: list, obs_set: list, state_set: list):
+    def __init__(self):
+        pass
+
+    def train(self, obs_seq_list: list, state_seq_list: list, obs_set: list, state_set: list, file):
         """
         :param obs_seq_list: observation sequence list [[o1, o2, o3], [o1, o2, o3]...]
         :param state_seq_list: state sequence list [[s1, s2, s3], [s1, s2, s3]...]
@@ -25,15 +28,8 @@ class HMM:
         self.state_set = state_set
         self.counter = Counter(''.join(state_seq_list))
 
-        self.startprob = None
-        self.transmat = None
-        self.emissionprob = None
-
         self.hmm = MultinomialHMM(n_components=len(self.state_set))
 
-    """ Use train or load_model to get startprob, transmat and emissionprob """
-
-    def train(self, file):
         self.startprob, self.transmat, self.emissionprob = \
             self._init_state(), self._trans_state(), self._emit_state()
         self.hmm.startprob_ = self.startprob

@@ -3,19 +3,18 @@
 
 """running script for cws """
 
-import argparse
 import codecs
 
-from hmm_model import Model as HMMModel
 from crf_model import CRF as CRFModel
 from dataset import Dataset
 from evaluate import eval_func
+from model.hmm import HMM
 
 
 class CWS:
     def __init__(self, method):
         if method == 'hmm':
-            self.Model = HMMModel
+            self.Model = HMM
         elif method == 'crf':
             self.Model = CRFModel
         elif method == 'bi-lstm-crf':
@@ -25,8 +24,9 @@ class CWS:
 
     def train(self, train_file, model_file):
         dataset = Dataset(train_file)
-        model = self.Model(dataset)
-        model.train(model_file)
+        states = ['S', 'B', 'M', 'E']
+        hmm = HMM(dataset.words, dataset.states, dataset.vocab, states)
+        hmm.train(model_file)
 
     def segment(self, model_file, test_file, result_file):
         model = self.Model.load_model(model_file)

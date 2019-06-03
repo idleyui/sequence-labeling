@@ -14,29 +14,22 @@
 
 ## Getting Started
 
-```bash
-# train
-python run.py \
-    --method [crf|hmm|lstm-crf] \
-    --mode train \
-    --train_file [file path] \
-    --model_file [file path] \
-    
-# segment
-python run.py \
-    --method [crf|hmm|lstm-crf] \
-    --mode segment \
-    --test_file [file path] \
-    --model_file [file path] \
-    --result_file [file path]
-    
-# eval
-python run.py \
-    --method [crf|hmm|lstm-crf] \
-    --mode eval \
-    --test_file [file path] \
-    --result_file [file path]
-    
-# e.g. training with hmm method
-python cws\run.py --method hmm --mode train --train_file train_cws.txt --model_file cws_hmm_model.pkl
+```python
+from run import CWS
+
+train_file = 'train.txt'
+model_file = 'model.pkl'
+result_file = 'result.txt'
+test_file = 'test.txt'
+
+if __name__ == '__main__':
+    c = CWS('crf')
+    c.train(train_file, model_file)
+    c.segment(model_file, test_file, result_file)
+    c.evaluate(test_file, result_file)
 ```
+
+## Models
+
+### HMM
+

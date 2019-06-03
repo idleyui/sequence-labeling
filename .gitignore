@@ -1,2 +1,6 @@
 __pycache__/
 .idea/
+
+data/
+# model and result
+result/

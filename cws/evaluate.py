@@ -13,7 +13,7 @@ from sklearn.preprocessing import LabelBinarizer
 from dataset import word2states
 
 
-def eval_func(test_result, gold_result) -> tuple:
+def cws_eval(test_result, gold_result) -> tuple:
     if isinstance(test_result, str):
         test_result = _lines(test_result)
         gold_result = _lines(gold_result)
@@ -74,5 +74,5 @@ def _eval_lines(test_result: list, gold_result: list) -> tuple:
 
 if __name__ == '__main__':
     # a,b,c = eval_func('../data/result/cws_hmm_result.txt','../data/testset1/test_cws1.txt')
-    a, b, c = eval_func('../data/result/cws_crf_result.txt', '../data/testset1/test_cws1.txt')
+    a, b, c = cws_eval('../data/result/cws_crf_result.txt', '../data/testset1/test_cws1.txt')
     print(a, b, c)

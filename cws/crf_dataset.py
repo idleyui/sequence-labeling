@@ -1,30 +1,25 @@
 import pycrfsuite
 
-from collections import Counter
 from dataset import Dataset
 
 
-class CRFDataset:
-    def __init__(self, dataset: Dataset = None):
-        if dataset is not None:
-            self.sent = []
-            for word_line, state_line in zip(dataset.words, dataset.states):
-                self.sent.append([(w[0], w[1]) for i, w in enumerate(zip(word_line, state_line))])
-            self.X, self.Y = self.mk_data(self.sent)
+class CWSCRFDataset(Dataset):
+    def __init__(self):
+        super().__init__()
         self.tagger = pycrfsuite.Tagger()
 
     def train_args(self, file):
-        dataset = Dataset(file)
+        self.read_corpus(file)
         self.sent = []
-        for word_line, state_line in zip(dataset.words, dataset.states):
+        for word_line, state_line in zip(self.words, self.states):
             self.sent.append([(w[0], w[1]) for i, w in enumerate(zip(word_line, state_line))])
-        self.X, self.Y = self.mk_data(self.sent)
+        self.X, self.Y = self._mk_data(self.sent)
         return self.X, self.Y
 
     def test_args(self, sentence):
-        return self.line2feature(sentence)
+        return self._line2feature(sentence)
 
-    def word2feature(self, line, i):
+    def _word2feature(self, line, i):
         def check(index):
             return 0 < index < len(line)
 
@@ -52,28 +47,11 @@ class CRFDataset:
 
         return features
 
-    def line2feature(self, line):
-        return [self.word2feature(line, i) for i in range(len(line))]
+    def _line2feature(self, line):
+        return [self._word2feature(line, i) for i in range(len(line))]
 
-    def line2labels(sent, line):
+    def _line2labels(sent, line):
         return [line[i][1] for i in range(len(line))]
 
-    def mk_data(self, sent):
-        return [self.line2feature(line) for line in sent], [self.line2labels(line) for line in sent]
-
-    def train(self, file):
-        trainer = pycrfsuite.Trainer(verbose=False)
-
-        for xseq, yseq in zip(self.X, self.Y):
-            trainer.append(xseq, yseq)
-
-        trainer.set_params({
-            'c1': 1,  # coefficient for L1 penalty
-            'c2': 1e-3,  # coefficient for L2 penalty
-            'max_iterations': 200,  # stop earlier
-
-            # include transitions that are possible, but not observed
-            'feature.possible_transitions': True
-        })
-        trainer.train(file)
-
+    def _mk_data(self, sent):
+        return [self._line2feature(line) for line in sent], [self._line2labels(line) for line in sent]

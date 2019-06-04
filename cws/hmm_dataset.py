@@ -7,10 +7,14 @@
 from dataset import Dataset
 
 
-class HMMDataset:
+class CWSHMMDataset(Dataset):
+
+    def __init__(self):
+        super().__init__()
+
     def train_args(self, file):
-        dataset = Dataset(file)
-        return dataset.words, dataset.states, dataset.vocab, ['S', 'B', 'M', 'E']
+        self.read_corpus(file)
+        return self.words, self.states, self.vocab, ['S', 'B', 'M', 'E']
 
     def test_args(self, sentence):
         return sentence
